@@ -25,6 +25,7 @@ class Frame:
     def define(self, symbol, value):
         """Define Scheme SYMBOL to have VALUE."""
         # BEGIN PROBLEM 1
+        #takes the value and binds it to the symbol in the frame
         self.bindings[symbol] = value
         # END PROBLEM 1
 
@@ -32,11 +33,16 @@ class Frame:
         """Return the value bound to SYMBOL. Errors if SYMBOL is not found."""
         # BEGIN PROBLEM 1
         "*** YOUR CODE HERE ***"
+        #checks if the symbol is in the current frames bindings
         if symbol in self.bindings:
+            #returns the value bound to symbol
             return self.bindings[symbol]
+        #checks if theres a parent frame
         elif self.parent is not None:
+            #returns the value bound to the symbol in the parent frame
             return self.parent.lookup(symbol)
         # END PROBLEM 1
+        #if not in the current or parent frame, raise an error
         raise SchemeError('unknown identifier: {0}'.format(symbol))
 
 
@@ -52,13 +58,19 @@ class Frame:
         >>> env.make_child_frame(formals, expressions)
         <{a: 1, b: 2, c: 3} -> <Global Frame>>
         """
+        # checks thats the lengths are the same and if theyre not the same length, they raise an error
         if len_link(formals) != len_link(vals):
             raise SchemeError('Incorrect number of arguments to function call')
         # BEGIN PROBLEM 8
         "*** YOUR CODE HERE ***"
+        #creates a new frame w/ self as the parent
         child_frame = Frame(self)
+        #check to see if there is something in formals, iterates through this
         while formals is not nil:
+            #binds the first formal to the first value in the child frame
             child_frame.define(formals.first, vals.first)
+            
+            #removes the first element from both formals and vals
             formals = formals.rest
             vals = vals.rest
         return child_frame
