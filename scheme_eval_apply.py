@@ -36,8 +36,7 @@ def scheme_eval(expr, env, _=None): # Optional third argument is ignored
     else:
         # BEGIN PROBLEM 3
         operator = scheme_eval(first, env)
-        operands = rest.map(lambda operand: scheme_eval(operand, env))
-
+        operands = map_link(lambda operand: scheme_eval(operand, env), expr.rest)
         return scheme_apply(operator, operands, env)
         # END PROBLEM 3
 
@@ -50,11 +49,9 @@ def scheme_apply(procedure, args, env):
     if isinstance(procedure, BuiltinProcedure):
         # BEGIN PROBLEM 2
         py_args = []
-        
         while args is not nil:
             py_args.append(args.first)
             args = args.rest
-
         if procedure.need_env:
             py_args.append(env)
         # END PROBLEM 2
@@ -89,7 +86,7 @@ def eval_all(expressions, env):
     # BEGIN PROBLEM 6
     if expressions is nil:
         return None
-    
+
     result = None
 
     while expressions is not nil:
