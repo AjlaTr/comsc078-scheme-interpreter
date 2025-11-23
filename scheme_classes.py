@@ -66,8 +66,9 @@ class Frame:
         #creates a new frame w/ self as the parent
         child_frame = Frame(self)
         #check to see if there is something in formals, iterates through this
+            
         while formals is not nil:
-            #binds the first formal to the first value in the child frame
+          #binds the first formal to the first value in the child frame
             child_frame.define(formals.first, vals.first)
             
             #removes the first element from both formals and vals
